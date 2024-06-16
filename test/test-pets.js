@@ -60,7 +60,7 @@ describe('Pets', ()  => {
 
   // TEST SHOW
   it('should show a SINGLE pet on /pets/<id> GET', (done) => {
-    var pet = new Pet(fido);
+    let pet = new Pet(fido);
      pet.save((err, data) => {
        chai.request(server)
          .get(`/pets/${data._id}`)
@@ -75,7 +75,7 @@ describe('Pets', ()  => {
 
   // TEST EDIT
   it('should edit a SINGLE pet on /pets/<id>/edit GET', (done) => {
-    var pet = new Pet(fido);
+    let pet = new Pet(fido);
      pet.save((err, data) => {
        chai.request(server)
          .get(`/pets/${data._id}/edit`)
@@ -90,7 +90,7 @@ describe('Pets', ()  => {
 
   // TEST UPDATE
   it('should update a SINGLE pet on /pets/<id> PUT', (done) => {
-    var pet = new Pet(fido);
+    let pet = new Pet(fido);
     pet.save((err, data)  => {
      chai.request(server)
       .put(`/pets/${data._id}?_method=PUT`)
@@ -105,7 +105,7 @@ describe('Pets', ()  => {
 
   // TEST DELETE
   it('should delete a SINGLE pet on /pets/<id> DELETE', (done) => {
-    var pet = new Pet(fido);
+    let pet = new Pet(fido);
     pet.save((err, data)  => {
      chai.request(server)
       .delete(`/pets/${data._id}?_method=DELETE`)
@@ -116,13 +116,27 @@ describe('Pets', ()  => {
       });
     });
   });
-  // SEARCH
+
+  // TEST SEARCH
   it('should search ALL pets by name on /search GET', (done) => {
     chai.request(server)
         .get('/search?term=norman')
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.html;
+          done();
+        });
+  });
+
+  // RESPONDING TO JSON
+  it('should list ALL pets on /pets GET', function(done) {
+    chai.request(server)
+        .get('/')
+        .set('content-type', 'application/json')
+        .end(function(err, res){
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
           done();
         });
   });
