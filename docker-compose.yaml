@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  pets:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: 'mongodb://mongodb/local'
+      AWS_ACCESS_KEY_ID: none
+      AWS_SECRET_ACCESS_KEY: none
+      S3_REGION: us-west-1
+      S3_BUCKET: dompetespetemporium
+      PUBLIC_STRIPE_API_KEY: none
+      PRIVATE_STRIPE_API_KEY: none
+      MAILGUN_API_KEY: none
+      EMAIL_DOMAIN: noen
+
+    command: npm start
+
+  mongodb:
+    image: mongo:4.4
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

@@ -3,6 +3,7 @@ if (!process.env.PORT) {
   process.env.NODE_ENV = "dev"
 }
 
+require('dotenv').config()
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -14,7 +15,8 @@ const methodOverride = require('method-override')
 const app = express();
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/local', {
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/local'
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
